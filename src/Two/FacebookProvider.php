@@ -71,15 +71,25 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface {
 	 * @param  string  $token
 	 * @return mixed
 	 */
-	public function getUserByToken($token)
+	public function getUserByToken($token, $fields = [])
 	{
-		$response = $this->getHttpClient()->get($this->graphUrl.'/'. $this->version .'/me?access_token='.$token, [
+		$response = $this->getHttpClient()->get($this->graphUrl.'/'. $this->version .'/me?access_token='.$token.$this->parseFields($fields), [
 			'headers' => [
 				'Accept' => 'application/json',
 			],
 		]);
 
 		return json_decode($response->getBody(), true);
+	}
+
+	protected function parseFields($fields = [])
+	{
+		$edge = '';
+		if (count($fields) > 0) {
+			$edge = '&fields='.implode(',', $fields);
+
+		}
+		return $edge;
 	}
 
 	/**
