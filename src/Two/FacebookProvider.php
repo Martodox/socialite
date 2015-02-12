@@ -67,9 +67,11 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface {
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Get user JSON object based on provided app token.
+	 * @param  string  $token
+	 * @return mixed
 	 */
-	protected function getUserByToken($token)
+	public function getUserByToken($token)
 	{
 		$response = $this->getHttpClient()->get($this->graphUrl.'/'. $this->version .'/me?access_token='.$token, [
 			'headers' => [
